@@ -6,7 +6,7 @@ Zero-shot inference and exact-match evaluation for the Deep Learning Challenge
 ## Colab setup
 
 ```bash
-!git clone https://github.com/OWNER/math-algorithm.git
+!git clone https://github.com/ryan-gil/math-algorithm.git
 %cd math-algorithm
 !pip install -r requirements.txt
 ```
