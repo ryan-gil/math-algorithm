@@ -1,0 +1,14 @@
+.venv/
+.vscode/
+__pycache__/
+*.py[cod]
+
+# Model weights and local caches
+.cache/
+huggingface/
+*.safetensors
+*.bin
+
+# Competition data and generated predictions
+deep-learning-challenge-2026/*.csv
+
