@@ -1,4 +1,6 @@
 .venv/
+.python/
+.tools/
 .vscode/
 __pycache__/
 *.py[cod]
@@ -11,4 +13,4 @@ huggingface/
 
 # Competition data and generated predictions
 deep-learning-challenge-2026/*.csv
-
+deep-learning-challenge-2026/embedding_cache/
