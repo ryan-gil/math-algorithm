@@ -43,6 +43,58 @@ truth answer, and exact-match result.
 Use `--resume` to continue an interrupted run. Use `--overwrite` to replace an
 existing output file.
 
+## QLoRA training in Colab
+
+Use a GPU runtime and mount Google Drive. The model is fixed to
+`Qwen/Qwen2.5-3B-Instruct`; only LoRA adapter weights are trained.
+
+```python
+!pip install -q -r requirements-training.txt
+
+from google.colab import drive
+drive.mount("/content/drive")
+```
+
+Put the semantic train/valid CSV files in
+`/content/drive/MyDrive/math_algorithm/data/`, then train the first epoch. The
+output directory is on Drive so Trainer checkpoints survive a runtime reset.
+
+```bash
+!python train_qlora.py \
+  --train-file "/content/drive/MyDrive/math_algorithm/data/deep_chal_math_train_semantic_90.csv" \
+  --valid-file "/content/drive/MyDrive/math_algorithm/data/deep_chal_math_valid_semantic_10.csv" \
+  --output-dir "/content/drive/MyDrive/math_algorithm/qwen25-3b-qlora" \
+  --target-epochs 1
+```
+
+Evaluate the saved epoch-1 adapter with exact-match accuracy:
+
+```bash
+!python evaluate_qlora.py \
+  --adapter-path "/content/drive/MyDrive/math_algorithm/qwen25-3b-qlora/adapter-epoch-1" \
+  --input "/content/drive/MyDrive/math_algorithm/data/deep_chal_math_valid_semantic_10.csv" \
+  --output "/content/drive/MyDrive/math_algorithm/qwen25-3b-qlora/valid-epoch-1.csv" \
+  --batch-size 4
+```
+
+If epoch 1 improves validation accuracy, resume its full Trainer checkpoint and
+train to a total of two epochs. This adds one epoch, not two more epochs.
+The first run already uses a two-epoch learning-rate schedule and stops at the
+epoch-1 boundary, so optimizer and scheduler state can be resumed correctly.
+
+```bash
+!python train_qlora.py \
+  --train-file "/content/drive/MyDrive/math_algorithm/data/deep_chal_math_train_semantic_90.csv" \
+  --valid-file "/content/drive/MyDrive/math_algorithm/data/deep_chal_math_valid_semantic_10.csv" \
+  --output-dir "/content/drive/MyDrive/math_algorithm/qwen25-3b-qlora" \
+  --target-epochs 2 \
+  --resume-from-checkpoint latest
+```
+
+Evaluate `adapter-epoch-2` with the same command after changing the adapter and
+output paths. Use `--max-train-samples 64 --max-eval-samples 32` with a new
+output directory for a short pipeline smoke test before the full run.
+
 ## Rejudge the top 1,000 SAME_TOPIC_ONLY candidates in Colab
 
 Select a T4 GPU runtime, install the judging dependencies, and mount Google

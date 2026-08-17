@@ -10,6 +10,10 @@ __pycache__/
 huggingface/
 *.safetensors
 *.bin
+outputs/
+qwen25-3b-qlora/
+**/checkpoint-*/
+**/adapter-epoch-*/
 
 # Competition data and generated predictions
 deep-learning-challenge-2026/*.csv
