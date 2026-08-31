@@ -16,7 +16,7 @@ from math_sft_common import (
 
 
 DEFAULT_VALID = Path(
-    "deep-learning-challenge-2026/deep_chal_math_valid_semantic_10.csv"
+    "deep-learning-challenge-2026/train-valid_split(1)/deep_chal_math_valid_10.csv"
 )
 FIELDS = ["id", "prediction", "raw_response", "answer", "correct"]
 

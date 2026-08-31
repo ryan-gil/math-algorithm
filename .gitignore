@@ -18,3 +18,9 @@ qwen25-3b-qlora/
 # Competition data and generated predictions
 deep-learning-challenge-2026/*.csv
 deep-learning-challenge-2026/embedding_cache/
+
+# Local training datasets and recorded model outputs
+*.csv
+data/
+lineage/**/data/
+lineage/**/recorded/
